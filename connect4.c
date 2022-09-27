@@ -47,7 +47,7 @@ char* pickPlayer(){
 }
 //requires: takes the updated board
 //effects: returns 1 if there is a horizontal line of 4 consecutive pieces having the same color; otherwise, returns 0.
-int checkHorizentally(int board[6][7]){
+int checkHorizentally(){
     for (int row=0; row<6; row++){ 
         for (int column=0; column<=3; column++){ 
             if(board[row][column] == board[row][column+1] && board[row][column] == board[row][column+2] && board[row][column] == board[row][column+3]){
@@ -57,9 +57,9 @@ int checkHorizentally(int board[6][7]){
     return 0;
 }
 }
-//requires: takes the updated board
+//requires: nothing
 //effects: returns 1 if there is a vertical line of 4 consecutive pieces having the same color; otherwise, returns 0.
-int checkVertically(int board[6][7]){
+int checkVertically(){
     for (int column=0; column<7; column++){
         for (int row=0; row<=2; row++){
             if(board[row][column] == board[row][column+1] && board[row][column] == board[row][column+2] && board[row][column] == board[row][column+3]){
@@ -68,9 +68,10 @@ int checkVertically(int board[6][7]){
     }
     return 0;
 }
-//requires: takes the updated board
+}
+//requires: nothing
 //effects: returns 1 if there is a diagonal line of 4 consecutive pieces having the same color; otherwise, returns 0.
-int checkDiagonally(int board[6][7]){
+int checkDiagonally(){
     for(int row=0;row<=3;row++){
         for(int column=0; column<=2;column++ ){
             if(board[row][column]==board[row+1][column+1] && board[row][column] ==board[row+2][column+2] && board[row][column]==board[row+3][column+3]){
@@ -88,10 +89,10 @@ int checkDiagonally(int board[6][7]){
     }
     return 0;
 }
-}
-//requires: The updated board and the column selectd by the player 
+
+//requires: A +ve int int the range of [0-6] representing the column selectd by the player 
 //effects: returns 1 if the corresponding column is full, and 0 otherwise. 
-int checkColumnFull(board[6][7], int col){
+int checkColumnFull(int col){
     int flag = 1;
     for (int row=0; row<=5; row++){
         if (board[row][col]==0){
@@ -100,6 +101,18 @@ int checkColumnFull(board[6][7], int col){
         }
     }
     return flag;
+}
+//requires: The updated board
+//effects: returns 1 if the board is full; 0 otherwise.
+int isBoardFull(){
+    int flag = 1;
+    for(int column=0; column <= 6; column++){
+        if(!checkColumnFull(column)){
+            flag = 0;
+            break;
+    }
+    return flag;
+}
 }
 int main(){
     printf("player 1: Enter your name (single word, no spaces): ");
