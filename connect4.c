@@ -193,7 +193,7 @@ int main(){
         if(winningMove(board)){
             strcpy(winner, playerHavingRed);
             printf("Congrats %s, you\'re the winner!",playerHavingRed);
-            break;
+            return 0;
         }
         timeTakenByPlayerHavingRed += (long double)(end-start)/CLOCKS_PER_SEC;
         printf("%s select a column number (between 0 and 6): ", playerHavingYellow);
@@ -224,7 +224,7 @@ int main(){
         if(winningMove(board)){
             strcpy(winner, playerHavingYellow);
             printf("Congrats %s, you\'re the winner!",playerHavingYellow);
-            break;
+            return 0;
         }
         timeTakenByPlayerHavingYellow += (long double)(end-start)/CLOCKS_PER_SEC;
     }
