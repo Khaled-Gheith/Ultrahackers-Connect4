@@ -53,8 +53,9 @@ int checkHorizentally(int board[6][7]){
                 return 1;
         }
     }
+    }
     return 0;
-}
+
 }
 //requires: takes the updated board
 //effects: returns 1 if there is a vertical line of 4 consecutive pieces having the same color; otherwise, returns 0.
@@ -65,8 +66,9 @@ int checkVertically(int board[6][7]){
                 return 1;
         }
     }
+    }
     return 0;
-}
+
 }
 //requires: takes the updated board
 //effects: returns 1 if there is a diagonal line of 4 consecutive pieces having the same color; otherwise, returns 0.
