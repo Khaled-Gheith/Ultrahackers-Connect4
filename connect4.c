@@ -46,7 +46,7 @@ char* pickPlayer(){
 }
 //requires: takes the updated board
 //effects: returns 1 if there is a horizontal line of 4 consecutive pieces having the same color; otherwise, returns 0.
-int checkHorizentally(int board[6][7]){
+int checkHorizontally(int board[6][7]){
     for (int row=5; row>=0; row--){ 
         for (int column=3; column>=0; column--){ 
             if(board[row][column] != 0 && board[row][column] == board[row][column+1] && board[row][column] == board[row][column+2] && board[row][column] == board[row][column+3]){
@@ -137,7 +137,7 @@ int updateBoard(int board[6][7],int column, int color){
 //requires: a 2D board of 6 rows and 7 columns 
 //effects: returns 1 if the player connected 4 entries successfully, 0 otherwise 
 int winningMove(int board[6][7]){
-    if(checkHorizentally(board) || checkVertically(board) || checkDiagonally(board)){
+    if(checkHorizontally(board) || checkVertically(board) || checkDiagonally(board)){
         return 1;
     }else{
         return 0;
@@ -169,6 +169,15 @@ int main(){
         start = clock();
         scanf("%d", &entry);
         end = clock();
+        while (entry < 0 || entry > 6){
+            printf("\nThe selected column is out of range!\n");
+            printBoard(board);
+            printf("Enter another valid column number: ");
+            start=clock();
+            scanf("%d", &entry);
+            end = clock();
+            timeTakenByPlayerHavingRed+=(long double)(end-start)/CLOCKS_PER_SEC;
+        }
         int isBoardUpdated1= updateBoard(board,entry, 1);
         while(!isBoardUpdated1){
             printf("\nThe selected column is full!\n");
@@ -191,6 +200,15 @@ int main(){
         start = clock();
         scanf("%d", &entry);
         end = clock();
+        while (entry < 0 || entry > 6){
+            printf("\nThe selected column is out of range!\n");
+            printBoard(board);
+            printf("Enter another valid column number: ");
+            start=clock();
+            scanf("%d", &entry);
+            end = clock();
+            timeTakenByPlayerHavingYellow+=(long double)(end-start)/CLOCKS_PER_SEC;
+        }
         int isBoardUpdated2= updateBoard(board,entry, 2);
         while(!isBoardUpdated2){
             printf("\nThe selected column is full!\n");
