@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <limits.h>//Added new 
+#include <limits.h>
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 char player[30];
@@ -156,9 +156,8 @@ int winningMove(int** board, int player){
     }
 }
 
-///NEW FUNCTIONS 
-
-
+// requires: a 2D board of 6 rows and 7 columns.
+// effects: returns another 2D board that is a copy of the argument.
 int** copyBoard(int** board) {
 	int** newBoard;
     newBoard = (int**)malloc(sizeof(int*) * 6);
@@ -173,7 +172,10 @@ int** copyBoard(int** board) {
 	return newBoard;
 }
 
-// Medium - Easy.
+// requires: an integer g representing the point in favor of the playor,
+// 			 an integer b representing the point opposing the playor,
+// 			 an integer z representing the empty point.
+// effects: returns the score of a successive set of 4 points.
 int heurFunction(unsigned int g, unsigned int b, unsigned int z) {
 	int score = 0;
 	if (g == 4) { score += 500001; }
@@ -185,6 +187,8 @@ int heurFunction(unsigned int g, unsigned int b, unsigned int z) {
 	return score;
 }
 
+// requires: an array of positions and an integer representing the player.
+// effects: returns the number of in-favor points, opposing points and neutral points.
 int scoreSet(int *target, unsigned int player) {
 	unsigned int good = 0;
 	unsigned int bad = 0;
@@ -198,7 +202,10 @@ int scoreSet(int *target, unsigned int player) {
 	bad -= good;
 	return heurFunction(good, bad, empty);
 }
-int tabScore(  int** board, unsigned int player) {
+
+// requires: a 2D board of 6 rows and 7 columns and an integer representing the player.
+// effects: returns the total score of all possible windows in the board.
+int tabScore(int** board, unsigned int player) {
 	int score = 0;
     int NUM_ROW = 6; 
     int NUM_COL = 7;
@@ -258,10 +265,10 @@ int tabScore(  int** board, unsigned int player) {
 	return score;
 }
 
-
-
-
-
+// requires: a 2D board of 6 rows and 7 columns, the depth of the board, the alpha integer, 
+// 				the beta integer, an integer representing the player.
+// effects: returns an array of 2 values in which the 1st is the minimum score and the 2nd 
+// 				is the maximum score.
 int* miniMax(int** board, unsigned int depth, int alf, int bet, unsigned int p) {
 
 	if (depth == 0 || depth >= (NUM_COL * NUM_ROW) - turns) {
@@ -318,6 +325,8 @@ int* miniMax(int** board, unsigned int depth, int alf, int bet, unsigned int p) 
 	}
 }
 
+// requires: nothing.
+// effects: prompt the user to input a column index and returns it.
 int userMove() {
 	int move ;
 	printf("Enter a column: ");
@@ -325,14 +334,16 @@ int userMove() {
 	return move;
 }
 
-
+// requires: a 2D board of 6 rows and 7 columns.
+// effects: returns the index of the column at which the computer wishes to make the move.
 int aiMove(int** board) {
 	printf("AI is thinking about a move...\n" );
 	int move = miniMax(board, MAX_DEPTH, 0 - INT_MAX, INT_MAX, COMPUTER)[1];
 	return move;
 }
 
-
+// requires: nothing.
+// effects: runs the whole game.
 void playGame(){
     int** board= (int**) malloc(sizeof(int*)*6);
     for (int i = 0; i < 7; i++){
@@ -343,29 +354,90 @@ void playGame(){
             board[i][j] = 0;
         }
     }
+
+	printf("Enter your name: ");
+    scanf("%s", &player);
+
+	char* playerHavingRed = pickPlayer();
+	char* playerHavingYellow = (strcmp(playerHavingRed,player) == 0) ? computer : player;
+	printf("%s you'll take the red color, \n%s you'll take the yellow color\n",playerHavingRed, playerHavingYellow);
+
 	printBoard(board); 
 	while (!gameOver) {
-		if (currentPlayer == COMPUTER) {
+		if (strcmp(playerHavingRed, computer) == 0){
+			currentPlayer = COMPUTER;
+			start = clock();
 			updateBoard(board, aiMove(board), COMPUTER);
+			end = clock();
+			timeTakenByPlayerHavingRed+=(long double)(end-start)/CLOCKS_PER_SEC;
+			printBoard(board);
 		}
-		else if (currentPlayer == PLAYER) { 
+		else if (strcmp(playerHavingRed, player) == 0) {
+			currentPlayer = PLAYER;
+			start = clock();
 			updateBoard(board, userMove(), PLAYER);
+			end = clock();
+			timeTakenByPlayerHavingRed+=(long double)(end-start)/CLOCKS_PER_SEC;
+			printBoard(board);
+		}
+		else if (turns == NUM_ROW * NUM_COL) { 
+			gameOver = 1;
+		}
+
+		if(winningMove(board, COMPUTER)){
+			printf("Congrats %s, you\'re the winner!",computer);
+			return;
+		}
+		else if(winningMove(board, PLAYER)){
+			printf("Congrats %s, you\'re the winner!",player);
+			return;
+		}
+
+		if (strcmp(playerHavingYellow, computer) == 0) {
+			currentPlayer = COMPUTER;
+			start = clock();
+			updateBoard(board, aiMove(board), COMPUTER);
+			end = clock();
+			timeTakenByPlayerHavingYellow+=(long double)(end-start)/CLOCKS_PER_SEC;
+			printBoard(board);
+		}
+		else if (strcmp(playerHavingYellow, player) == 0) {
+			currentPlayer = PLAYER;
+			start = clock();
+			updateBoard(board, userMove(), PLAYER);
+			end = clock();
+			timeTakenByPlayerHavingYellow+=(long double)(end-start)/CLOCKS_PER_SEC;
+			printBoard(board);
 		}
 		else if (turns == NUM_ROW * NUM_COL) { 
 			gameOver = 1;
 		}
 		gameOver = winningMove(board, currentPlayer);
-		currentPlayer = (currentPlayer == 1) ? 2 : 1; 
+		currentPlayer = (currentPlayer == COMPUTER) ? PLAYER : COMPUTER; 
 		turns++; 
 		printf("\n");
-		printBoard(board);
-		
+
+		if(winningMove(board, COMPUTER)){
+			printf("Congrats %s, you\'re the winner!",computer);
+			return;
+		}
+		else if(winningMove(board, PLAYER)){
+			printf("Congrats %s, you\'re the winner!",player);
+			return;
+		}
 	}
-	if (turns == NUM_ROW * NUM_COL) { 
-		printf( "Draw! \n");
-	}
-	else { 
-		printf((currentPlayer == PLAYER) ? "AI Wins!\n" : strcat(player," Wins!\n"));
+
+	if(isBoardFull(board)){
+		if(timeTakenByPlayerHavingRed < timeTakenByPlayerHavingYellow){
+			printf("Time taken by %s = %d seconds.\n",playerHavingRed,timeTakenByPlayerHavingRed);
+			printf("Time taken by %s = %d seconds.\n",playerHavingYellow,timeTakenByPlayerHavingYellow);
+			printf("Congrats %s, you\'re the winner!",playerHavingRed);
+		} 
+		else{
+			printf("Time taken by %s = %d seconds.\n",playerHavingYellow,timeTakenByPlayerHavingYellow);
+			printf("Time taken by %s = %d seconds.\n",playerHavingRed,timeTakenByPlayerHavingRed);
+			printf("Congrats %s, you\'re the winner!",playerHavingYellow);
+		}
 	}
 }
 
@@ -373,109 +445,3 @@ int main(){
     playGame();
     return 0;
 }
-// int main(){
-//     int** board= (int**) malloc(sizeof(int*)*6);
-//     for (int i = 0; i < 7; i++){
-//         board[i] = (int*)malloc(sizeof(int) *7);
-//     }
-//     for(int i = 0; i < 6; i++){
-//         for (int j = 0; j < 7; j++){
-//             board[i][j] = 0;
-//         }
-//     }
-//     printBoard(board);
-//     int i = 0;
-//     while (i < 5){
-        
-//         int result = aiMove(board);
-//         updateBoard(board, result, 1);
-//         printBoard(board);
-//         i+=1;
-//     }
-
-//     printf("Enter your name (single word, no spaces): ");
-//     scanf("%s",player);
-
-//     char* playerHavingRed = pickPlayer();
-//     char* playerHavingYellow = (strcmp(playerHavingRed,player) == 0) ? computer : player;
-//     printf("%s you'll take the red color, \n%s you'll take the yellow color\n",playerHavingRed, playerHavingYellow);
-//     printBoard(board);
-
-//     while(!isBoardFull(board)){
-//         printf("\n");
-//         printf("%s select a column number (between 0 and 6): ", playerHavingRed);
-//         start = clock();
-//         scanf("%depth", &entry);
-//         end = clock();
-//         while (entry < 0 || entry > 6){
-//             printf("\nThe selected column is out of range!\n");
-//             printBoard(board);
-//             printf("Enter another valid column number: ");
-//             start=clock();
-//             scanf("%depth", &entry);
-//             end = clock();
-//             timeTakenByPlayerHavingRed+=(long double)(end-start)/CLOCKS_PER_SEC;
-//         }
-//         int isBoardUpdated1= updateBoard(board,entry, 1);
-//         while(!isBoardUpdated1){
-//             printf("\nThe selected column is full!\n");
-//             printBoard(board);
-//             printf("Enter another valid column number: ");
-//             start=clock();
-//             scanf("%depth", &entry);
-//             end = clock();
-//             timeTakenByPlayerHavingRed+=(long double)(end-start)/CLOCKS_PER_SEC;
-//             isBoardUpdated1=updateBoard(board,entry,1);
-//         }
-//         printBoard(board);
-//         if(winningMove(board)){
-//             strcpy(winner, playerHavingRed);
-//             printf("Congrats %s, you\'re the winner!",playerHavingRed);
-//             return 0;
-//         }
-//         timeTakenByPlayerHavingRed += (long double)(end-start)/CLOCKS_PER_SEC;
-//         printf("%s select a column number (between 0 and 6): ", playerHavingYellow);
-//         start = clock();
-//         scanf("%depth", &entry);
-//         end = clock();
-//         while (entry < 0 || entry > 6){
-//             printf("\nThe selected column is out of range!\n");
-//             printBoard(board);
-//             printf("Enter another valid column number: ");
-//             start=clock();
-//             scanf("%depth", &entry);
-//             end = clock();
-//             timeTakenByPlayerHavingYellow+=(long double)(end-start)/CLOCKS_PER_SEC;
-//         }
-//         int isBoardUpdated2= updateBoard(board,entry, 2);
-//         while(!isBoardUpdated2){
-//             printf("\nThe selected column is full!\n");
-//             printBoard(board);
-//             printf("Enter another valid column number: ");
-//             start=clock();
-//             scanf("%depth", &entry);
-//             end = clock();
-//             timeTakenByPlayerHavingYellow+=(long double)(end-start)/CLOCKS_PER_SEC;
-//             isBoardUpdated2=updateBoard(board,entry,2);
-//         }
-//         printBoard(board);
-//         if(winningMove(board)){
-//             strcpy(winner, playerHavingYellow);
-//             printf("Congrats %s, you\'re the winner!",playerHavingYellow);
-//             return 0;
-//         }
-//         timeTakenByPlayerHavingYellow += (long double)(end-start)/CLOCKS_PER_SEC;
-//     }
-//     if(isBoardFull(board)){
-//         if(timeTakenByPlayerHavingRed < timeTakenByPlayerHavingYellow){
-//             printf("Time taken by %s = %depth seconds.\n",playerHavingRed,timeTakenByPlayerHavingRed);
-//             printf("Time taken by %s = %depth seconds.\n",playerHavingYellow,timeTakenByPlayerHavingYellow);
-//             printf("Congrats %s, you\'re the winner!",playerHavingRed);
-//         } 
-//         else{
-//             printf("Time taken by %s = %depth seconds.\n",playerHavingYellow,timeTakenByPlayerHavingYellow);
-//             printf("Time taken by %s = %depth seconds.\n",playerHavingRed,timeTakenByPlayerHavingRed);
-//             printf("Congrats %s, you\'re the winner!",playerHavingYellow);
-//         }
-//     }
-// }
