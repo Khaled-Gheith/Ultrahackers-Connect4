@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <limits.h>//Added new 
+#include <limits.h>
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 char player[30];
@@ -206,7 +206,7 @@ int heuristic_Ultrahackers(unsigned int goodPoints, unsigned int opposingPoints,
 
 // requires: an array of positions and an integer representing the player.
 // effects: returns the number of in-favor points, opposing points and neutral points.
-int pointsScoring_Ultrahackers(int *target, unsigned int player) {
+int windowScore_Ultrahackers(int *target, unsigned int player) {
 	unsigned int goodPoints = 0;
 	unsigned int opposingPoints = 0;
 	unsigned int neutralPoints = 0;
@@ -222,7 +222,7 @@ int pointsScoring_Ultrahackers(int *target, unsigned int player) {
 
 // requires: a 2D board of 6 rows and 7 columns and an integer representing the player.
 // effects: returns the total score of all possible windows in the board.
-int windowScoring_Ultrahackers(int** board, unsigned int player) {
+int boardScore_Ultrahackers(int** board, unsigned int player) {
 	int score = 0;
     int NUM_ROW = 6; 
     int NUM_COL = 7;
@@ -239,7 +239,7 @@ int windowScoring_Ultrahackers(int** board, unsigned int player) {
 			for (int i = 0; i < 4; i++) {
 				window[i] = rs[c + i];
 			}
-			score += pointsScoring_Ultrahackers(window, player);
+			score += windowScore_Ultrahackers(window, player);
 		}
 	}
 
@@ -252,7 +252,7 @@ int windowScoring_Ultrahackers(int** board, unsigned int player) {
 			for (int i = 0; i < 4; i++) {
 				window[i] = cs[r + i];
 			}
-			score += pointsScoring_Ultrahackers(window, player);
+			score += windowScore_Ultrahackers(window, player);
 		}
 	}
 
@@ -265,7 +265,7 @@ int windowScoring_Ultrahackers(int** board, unsigned int player) {
 			for (int i = 0; i < 4; i++) {
 				window[i] = board[r + i][c + i];
 			}
-			score += pointsScoring_Ultrahackers(window, player);
+			score += windowScore_Ultrahackers(window, player);
 		}
 	}
 	for (unsigned int r = 0; r < 3; r++) {
@@ -276,7 +276,7 @@ int windowScoring_Ultrahackers(int** board, unsigned int player) {
 			for (int i = 0; i < 4; i++) {
 				window[i] = board[r + 3 - i][c + i];
 			}
-			score += pointsScoring_Ultrahackers(window, player);
+			score += windowScore_Ultrahackers(window, player);
 		}
 	}
 	return score;
@@ -290,7 +290,7 @@ int* miniMax_Ultrahackers(int** board, unsigned int depth, int alpha, int beta, 
 
 	if (depth == 0 || depth >= (NUM_COL * NUM_ROW) - turns) {
         int *result = (int*) malloc(sizeof(int)*2);
-        result [0] = windowScoring_Ultrahackers(board, COMPUTER);
+        result [0] = boardScore_Ultrahackers(board, COMPUTER);
         result [1] = -1;
 		return result; 
 	}
@@ -332,7 +332,7 @@ int* miniMax_Ultrahackers(int** board, unsigned int depth, int alpha, int beta, 
 				int score = arr[0];
 				if (score < moveSoFar[0]) {
 					moveSoFar[0] = score;
-                    moveSoFar[1] = (int)c;
+                    moveSoFar[1] = c;
 				}
 				beta = min(beta, moveSoFar[0]);
 				if (alpha >= beta) { break; }
@@ -345,7 +345,7 @@ int* miniMax_Ultrahackers(int** board, unsigned int depth, int alpha, int beta, 
 // requires: a 2D board of 6 rows and 7 columns.
 // effects: returns the index of the column at which the computer wishes to make the move.
 int make_move_Ultrahackers(int** board) {
-	printf("AI is thinking about a move...\n" );
+	printf("Computer is thinking about a move...\n" );
 	int move = miniMax_Ultrahackers(board, MAX_DEPTH, 0 - INT_MAX, INT_MAX, COMPUTER)[1];
 	return move;
 }
@@ -393,7 +393,7 @@ void playGame_Ultrahackers(){
 		}
 
 		if(winningMove_Ultrahackers(board, COMPUTER)){
-			printf("Congrats %s, you\'re the winner!",computer);
+			printf("Hard luck! Computer wins.");
 			return;
 		}
 		else if(winningMove_Ultrahackers(board, PLAYER)){
@@ -426,7 +426,7 @@ void playGame_Ultrahackers(){
 		printf("\n");
 
 		if(winningMove_Ultrahackers(board, COMPUTER)){
-			printf("Congrats %s, you\'re the winner!",computer);
+			printf("Hard luck! Computer wins.");
 			return;
 		}
 		else if(winningMove_Ultrahackers(board, PLAYER)){
