@@ -41,7 +41,7 @@ void printBoard_Ultrahackers(int** board){
 //requires: nothing
 //effects: returns_Ultrahackers a random float number betaween 0 and 1
 
-int fairCoin_Ultrahacker(){
+int fairCoin_Ultrahackers(){
     srand(time(NULL));
     return rand()%10;
 }
@@ -49,7 +49,7 @@ int fairCoin_Ultrahacker(){
 //effects: returns_Ultrahackers the name of the player having the red color
 //if the value returned by fairCoin_Ultrahacker() is [0-4], player1 will be red. Otherwise, player2 will take the red color.
 char* pickPlayer_Ultrahackers(){
-    int randomNumber = fairCoin_Ultrahacker();
+    int randomNumber = fairCoin_Ultrahackers();
     if (0 <= randomNumber && randomNumber <= 4){
         return playerName_Ultrahackers;
     }
