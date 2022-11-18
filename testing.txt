@@ -1,0 +1,339 @@
+/*
+    Testing Strategy:
+    Partitions checkHorizontally(board) as follow:
+    1) the first 4 cells of the first row are full with equal values.
+    2) the last 4 cells of the first row are full with equal values.
+    3) the first 4 cells of the last row are full with equal values.
+    4) the last 4 cells of the last row are full with equal values.
+    5) the middle 4 cells of the middle row are full with equal values.
+*/
+// partition 1
+int board1[6][7] = {{1,1,1,1,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0}
+                    };
+printf("%d\n",checkHorizontally(board1)); // prints 1
+
+//Partition 2
+int board2[6][7] = {{0,0,0,1,1,1,1},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0}
+                    };
+printf("%d\n",checkHorizontally(board2)); // prints 1
+
+//Partition 3
+int board3[6][7] ={{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {1,1,1,1,0,0,0}
+                    };
+printf("%d\n",checkHorizontally(board3)); // prints 1
+
+//Partition 4
+int board4[6][7] ={{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,1,1,1,1}
+                    };
+printf("%d\n",checkHorizontally(board4)); // prints 1
+
+//Partition 5
+int board5[6][7] ={{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,1,1,1,1,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0}
+                    };
+printf("%d\n",checkHorizontally(board5)); // prints 1
+
+/*
+    Testing Strategy:
+    Partitions checkVertically(board) as follow:
+    1) the first 4 cells of the first column are full with equal values.
+    2) the last 4 cells of the first column are full with equal values.
+    3) the first 4 cells of the last column are full with equal values.
+    4) the last 4 cells of the last column are full with equal values.
+    5) the middle 4 cells of the middle column are full with equal values.
+*/
+//Partition 1
+int board6[6][7] = {{1,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0}
+                    };
+printf("%d\n",checkVertically(board6)); // prints 1
+
+//Partition 2
+int board7[6][7] = {{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0},
+                    {1,0,0,0,0,0,0}
+                };
+printf("%d\n",checkVertically(board7)); // prints 1
+
+//Partition 3
+int board8[6][7] ={{0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0}
+                    };
+printf("%d\n",checkVertically(board8)); // prints 1
+
+//Partition 4
+int board9[6][7] ={{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1},
+                    {0,0,0,0,0,0,1}
+                    };
+printf("%d\n",checkVertically(board9)); // prints 1
+
+//Partition 5
+int board10[6][7] ={{0,0,0,0,0,0,0},
+                    {0,0,0,1,0,0,0},
+                    {0,0,0,1,0,0,0},
+                    {0,0,0,1,0,0,0},
+                    {0,0,0,1,0,0,0},
+                    {0,0,0,0,0,0,0}
+                    };
+printf("%d\n",checkVertically(board10)); // prints 1
+
+/* Testing Strategy:
+Partitions CheckDiagonally(board) as follow:
+1) Diagonal from the top left corner of the board
+2) Diagonal from the bottom left corner of the board
+3) Diagonal from the top right corner of the board
+4) Diagonal from the bottom right corner of the board
+5) Diagonal in the middle of the board of the board
+*/
+
+//Partition 1
+int board11[6][7]= {{1,0,0,0,0,0,0},
+                    {2,1,0,0,0,0,0},
+                    {2,1,1,0,0,0,0},
+                    {2,1,1,1,0,0,0},
+                    {1,2,2,2,0,0,0},
+                    {2,2,1,1,2,0,0}
+                    };
+printf("%d\n",checkDiagonally(board11));  //prints 1
+
+//Partition 2
+    int board12[6][7]= {{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,2,0,0,0},
+                    {0,0,2,1,0,0,0},
+                    {0,2,1,2,0,0,0},
+                    {2,1,1,1,0,0,0}
+                    };
+printf("%d\n",checkDiagonally(board12));  //prints 1
+
+//partition 3
+int board13[6][7]= {{0,0,0,0,0,0,1},
+                    {0,0,0,0,0,1,2},
+                    {0,0,0,0,1,1,2},
+                    {0,0,0,1,1,1,2},
+                    {0,0,0,2,2,2,1},
+                    {0,0,2,1,1,2,2}
+                    };
+printf("%d\n",checkDiagonally(board13));  //prints 1
+
+//Partition 4
+int board14[6][7]= {{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,2,0,0,0},
+                    {0,0,0,1,2,0,0},
+                    {0,0,0,2,1,2,0},
+                    {0,0,0,1,1,1,2}
+                    };
+printf("%d\n",checkDiagonally(board14));  //prints 1
+
+//Partition 5
+int board15[6][7]= {{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,2,0,0,0},
+                    {0,0,0,1,2,0,0},
+                    {0,0,0,2,1,2,0},
+                    {0,0,0,1,1,1,2}
+                    };
+printf("%d\n",checkDiagonally(board15));  //prints 1
+
+/*Testing Strategy:
+Partitions GetFirstEmptyRow(board,column) as follow:
+1) Chosen column is empty
+2) Chosen columnn is full
+3) Chosen column is half full
+*/
+
+int board16[6][7]= {{0,0,0,2,0,0,0},
+                    {0,0,0,1,0,0,0},
+                    {0,0,0,2,0,0,0},
+                    {0,0,0,1,0,0,0},
+                    {2,0,0,2,0,0,0},
+                    {1,2,1,1,0,0,0}
+                    };
+//Partition 1
+printf("%d\n",getFirstEmptyRow(board16,6));  //prints 5
+
+//Partition 2
+printf("%d\n",getFirstEmptyRow(board16,3));  //prints -1
+
+//Partition 3
+printf("%d\n", getFirstEmptyRow(board16,0)); //prints 3
+
+/* 
+Testing Strategy:
+Partitions updateBoard(board,column,color) as follow:
+1) the entered column is already full
+2) the entered column is not full
+*/
+//partition 1
+printf("%d\n",updateBoard(board16,3,1)); // prints 0
+
+//partition 2
+printf("%d\n",updateBoard(board2,0,2)); // prints 1
+
+
+/*
+Testing strategy:
+Partitions CheckColumnFull(board, column) as follow:
+1) the entered column is already full
+2) the entered column is not full
+*/
+//partition 1
+printf("%d\n",CheckColumnFull(board16,3)); // prints 0
+
+//partition 2
+printf("%d\n",CheckColumnFull(board16,0)); // prints 1
+
+
+/*
+Testing strategy:
+Partitions copyBoard(board) as follow:
+1) the board is empty
+2) the board contains entries
+*/
+//partition 1 
+printBoard(copyBoard(board6))
+=>  {{1,0,0,0,0,0,0},
+    {1,0,0,0,0,0,0},
+    {1,0,0,0,0,0,0},
+    {1,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0}
+    };
+
+//partition 2 
+printBoard(copyBoard(board11))
+=>  {{1,0,0,0,0,0,0},
+    {2,1,0,0,0,0,0},
+    {2,1,1,0,0,0,0},
+    {2,1,1,1,0,0,0},
+    {1,2,2,2,0,0,0},
+    {2,2,1,1,2,0,0}
+    };
+
+/*
+Testing strategy:
+Partitions userMove() as follow:
+1) the entered value is out of range
+2) the entered value is within the range
+*/
+//partition 1
+entered value by user: 7
+printf("%d\n",userMove()); // prints "Invalid Input! Enter a valid column value!"
+
+//partition 2
+entered value is 3
+printf("%d\n",userMove()); // prints 3
+
+/*
+Testing strategy:
+Partitions winningMove(board, player) as follow:
+1) the player has won in at least one path
+2) the player didn't win
+*/
+//partition 1
+printf("%d\n",winningMove(board14, 2)); // prints 1
+
+OR
+int board17[6][7]= {{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {0,0,2,1,0,0,0},
+                    {2,2,1,2,0,0,0},
+                    {2,1,1,1,1,2,0}
+                    };
+
+printf("%d\n",winningMove(board17, 1)); // prints 1
+
+OR
+int board18[6][7]= {{0,0,0,0,0,0,0},
+                    {0,0,0,0,0,0,0},
+                    {2,0,0,0,0,0,0},
+                    {2,1,2,1,0,0,0},
+                    {2,2,1,2,1,0,0},
+                    {2,1,1,1,2,2,0}
+                    };
+
+printf("%d\n",winningMove(board18, 2)); // prints 1
+
+//partition 2
+printf("%d\n",winningMove(board16, 1)); // prints 0
+
+/*
+Testing strategy:
+Partitions miniMax(board,depth,alfa,beta,player) as follow:
+1) the depth is as deep as 6
+2) the depth is as deep as 4
+3) the depth is as deep as 2
+*/
+//partition 1
+printf("%d",minimax(board,6,0-INT_MAX,INT_MAX,player)); //returns 3
+
+//partition 2
+printf("%d",minimax(board,4,0-INT_MAX,INT_MAX,player)); returns 2
+
+//partition 3
+printf("%d",minimax(board,2,0-INT_MAX,INT_MAX,player)); returns 0
+
+/*Testing strategy:
+Partitions windowScore_Ultrahackers(*target, int player) and heuristic_Ultrahackers(int g, int b, int z) as follow:
+1) target with only good points
+2) target with only opposing points
+3) target with only neutral points
+4) target with 2 good, 2 neutral points
+
+//partition 1
+int *target={1,1,1,1};
+printf("%d", windowScore_Ultrahackers(target, 1)//assume that player is number 1, prints 500001
+
+//partition 2
+int*target={2,2,2,2};
+printf("%d", windowScore_Ultrahackers(target, 1)//assume that player is number 1, prints -500000
+
+//partition 3
+int*target={0,0,0,0}
+printf("%d", windowScore_Ultrahackers(target, 1)//assume that player is number 1, prints 0
+
+//partition 4
+int*target={0,1,1,0}
+printf("%d", windowScore_Ultrahackers(target, 1)//assume that player is number 1, prints 500
+
